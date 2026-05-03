@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Constellation of Roles</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #f7f6f2;
+    --surface: #ffffff;
+    --border: rgba(0,0,0,0.08);
+    --border-hover: rgba(0,0,0,0.18);
+    --text-primary: #1a1916;
+    --text-secondary: #6b6a65;
+    --text-tertiary: #a09f9a;
+    --radius-md: 8px;
+    --radius-lg: 14px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-hover: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+    font-family: 'DM Sans', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text-primary); min-height: 100vh; padding: 2rem 1.5rem 4rem; }
+  .page-header { max-width: 960px; margin: 0 auto 2rem; }
+  .page-title { font-family: 'DM Serif Display', serif; font-size: 2rem; font-weight: 400; color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: 0.35rem; }
+  .page-sub { font-size: 13px; color: var(--text-secondary); }
+  .summary-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1rem; }
+  .pill { font-size: 12px; color: var(--text-secondary); background: white; border: 1px solid var(--border); border-radius: 99px; padding: 3px 12px; }
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; max-width: 960px; margin-left: auto; margin-right: auto; }
+  .btn { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; padding: 6px 14px; border: 1px solid var(--border-hover); border-radius: var(--radius-md); background: white; color: var(--text-primary); cursor: pointer; transition: all 0.15s; }
+  .btn:hover { background: var(--bg); border-color: var(--text-tertiary); }
+  .btn-primary { background: var(--text-primary); color: white; border-color: var(--text-primary); }
+  .btn-primary:hover { opacity: 0.85; background: var(--text-primary); }
+  .btn-danger { color: #c0392b; border-color: rgba(192,57,43,0.25); background: white; }
+  .btn-danger:hover { background: rgba(192,57,43,0.06); }
+  .btn-sm { font-size: 11px; padding: 3px 9px; }
+  .main { max-width: 960px; margin: 0 auto; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin: 2rem 0 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  .section-title { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-secondary); }
+  .section-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-bottom: 0.5rem; }
+  .hat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); transition: box-shadow 0.2s, border-color 0.2s; }
+  .hat-card:hover { box-shadow: var(--shadow-hover); border-color: var(--border-hover); }
+  .hat-header { padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px; cursor: pointer; user-select: none; }
+  .hat-label { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
+  .hat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .hat-title { font-size: 13px; font-weight: 500; color: var(--text-primary); line-height: 1.35; }
+  .hat-meta { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .count-badge { font-size: 11px; color: var(--text-tertiary); background: var(--bg); border-radius: 99px; padding: 1px 8px; border: 1px solid var(--border); }
+  .chevron { font-size: 9px; color: var(--text-tertiary); transition: transform 0.2s; }
+  .hat-card.open .chevron { transform: rotate(180deg); }
+  .hat-card.open .card-body { display: block; }
+  .card-body { display: none; border-top: 1px solid var(--border); padding: 10px 14px 13px; }
+  .resp-list { list-style: none; margin-bottom: 10px; }
+  .resp-item { padding: 2px 0; }
+  .resp-top { display: flex; align-items: flex-start; gap: 6px; }
+  .resp-dash { font-size: 12px; color: var(--text-tertiary); flex-shrink: 0; margin-top: 1px; }
+  .resp-text { font-size: 12px; color: var(--text-secondary); flex: 1; line-height: 1.5; cursor: pointer; transition: color 0.1s; }
+  .resp-text:hover { color: var(--text-primary); }
+  .resp-actions { display: flex; gap: 3px; opacity: 0; flex-shrink: 0; }
+  .resp-item:hover .resp-actions { opacity: 1; }
+  .resp-actions button { font-size: 10px; background: none; border: none; cursor: pointer; padding: 0 3px; color: var(--text-tertiary); line-height: 1.8; }
+  .resp-actions button.del { color: #c0392b; }
+  .sub-toggle-btn { color: var(--text-tertiary); }
+  .sub-list { list-style: none; margin: 5px 0 3px 18px; padding-left: 10px; border-left: 2px solid var(--border); }
+  .sub-list.hidden { display: none; }
+  .sub-item { display: flex; align-items: flex-start; gap: 5px; padding: 2px 0; }
+  .sub-arrow { font-size: 10px; color: var(--text-tertiary); flex-shrink: 0; margin-top: 1px; }
+  .sub-text { font-size: 11px; color: var(--text-tertiary); flex: 1; line-height: 1.5; }
+  .sub-del { font-size: 10px; background: none; border: none; cursor: pointer; color: #c0392b; opacity: 0; padding: 0 2px; }
+  .sub-item:hover .sub-del { opacity: 1; }
+  .add-sub-row { display: flex; gap: 5px; margin-top: 5px; }
+  .add-sub-row input { flex: 1; font-family: 'DM Sans', sans-serif; font-size: 11px; padding: 4px 8px; border: 1px solid var(--border-hover); border-radius: var(--radius-md); background: var(--bg); color: var(--text-primary); outline: none; }
+  .add-sub-row input:focus { border-color: var(--text-secondary); }
+  .add-resp-row { display: flex; gap: 6px; margin-top: 8px; }
+  .add-resp-row input { flex: 1; font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 5px 10px; border: 1px solid var(--border-hover); border-radius: var(--radius-md); background: var(--bg); color: var(--text-primary); outline: none; }
+  .add-resp-row input:focus { border-color: var(--text-secondary); }
+  .card-actions { display: flex; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+  .add-hat-card { background: transparent; border: 1.5px dashed var(--border-hover); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; min-height: 60px; cursor: pointer; transition: all 0.15s; }
+  .add-hat-card:hover { background: white; border-color: var(--text-tertiary); }
+  .add-hat-card span { font-size: 12px; color: var(--text-tertiary); }
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 100; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+  .modal-overlay.open { display: flex; }
+  .modal { background: white; border-radius: var(--radius-lg); padding: 1.5rem; width: 100%; max-width: 380px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+  .modal h3 { font-family: 'DM Serif Display', serif; font-size: 1.2rem; font-weight: 400; margin-bottom: 1rem; color: var(--text-primary); }
+  .modal label { font-size: 12px; color: var(--text-secondary); display: block; margin: 12px 0 4px; font-weight: 500; }
+  .modal input, .modal select { width: 100%; font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 8px 10px; border: 1px solid var(--border-hover); border-radius: var(--radius-md); background: var(--bg); color: var(--text-primary); outline: none; }
+  .modal input:focus, .modal select:focus { border-color: var(--text-secondary); }
+  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.25rem; }
+  .save-note { font-size: 11px; color: var(--text-tertiary); margin-top: 1rem; text-align: center; font-style: italic; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1 class="page-title">My constellation of roles</h1>
+  <p class="page-sub">Click any hat to expand. Click a responsibility to add sub-items.</p>
+  <div class="summary-pills" id="summarybar"></div>
+</div>
+
+<div class="toolbar">
+  <button class="btn" onclick="toggleAll(true)">Expand all</button>
+  <button class="btn" onclick="toggleAll(false)">Collapse all</button>
+  <button class="btn btn-primary" onclick="openAddHat()">+ Add hat</button>
+  <button class="btn" onclick="openAddSection()">+ Add domain</button>
+  <button class="btn" onclick="exportData()">Export JSON</button>
+  <button class="btn" onclick="importData()">Import JSON</button>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<p class="save-note">Changes save automatically to your browser. Use Export JSON to back up your data.</p>
+
+<!-- Hat modal -->
+<div class="modal-overlay" id="modalBg">
+  <div class="modal">
+    <h3 id="modalTitle">Add hat</h3>
+    <label>Hat name</label>
+    <input id="mHatName" type="text" placeholder="e.g. IRB Committee Member"/>
+    <label>Domain</label>
+    <select id="mSection"></select>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveHat()">Add hat</button>
+    </div>
+  </div>
+</div>
+
+<!-- Domain modal -->
+<div class="modal-overlay" id="sectionModalBg">
+  <div class="modal">
+    <h3>Add domain</h3>
+    <label>Domain name</label>
+    <input id="mSectionName" type="text" placeholder="e.g. Health & Wellness"/>
+    <label>Color</label>
+    <input id="mSectionColor" type="color" value="#534AB7" style="height:40px;padding:3px 5px;cursor:pointer;"/>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeSectionModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveSection()">Add domain</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const INIT = [
+  {label:"SJSU & Academic",color:"#534AB7",hats:[
+    {title:"Assistant Professor, SJSU",items:[
+      {text:"Teach EDSP 178 (SLPA data-taking & reporting)",sub:[]},
+      {text:"Teach EDSP 264 (Contemporary Professional Issues)",sub:[]},
+      {text:"Grade reflections & provide Canvas feedback",sub:[]},
+      {text:"Office hours & student advising",sub:[]},
+      {text:"Maintain course materials & syllabi",sub:[]},
+      {text:"Faculty governance & department meetings",sub:[]},
+      {text:"Annual review & tenure documentation",sub:[]},
+      {text:"Peer review for journals & conferences",sub:[]},
+      {text:"Stay current with field literature",sub:[]}
+    ]},
+    {title:"SLPA Program Director",items:[
+      {text:"Oversee SLPA curriculum & compliance",sub:[]},
+      {text:"Coordinate clinical placements & fieldwork",sub:[]},
+      {text:"Maintain accreditation readiness",sub:[]},
+      {text:"Advise SLPA students",sub:[]},
+      {text:"Recruit & support SLPA cohort",sub:[]},
+      {text:"Communicate with ASHA & state licensing boards",sub:[]},
+      {text:"Review & update program policies",sub:[]}
+    ]},
+    {title:"Undergraduate Coordinator, CDS",items:[
+      {text:"Coordinate undergraduate CDS major",sub:[]},
+      {text:"Advise undergrad students on pathways",sub:[]},
+      {text:"Manage course scheduling & sequencing",sub:[]},
+      {text:"Coordinate with advising office",sub:[]},
+      {text:"Track student progress toward graduation",sub:[]},
+      {text:"Support undergraduate research opportunities",sub:[]}
+    ]},
+    {title:"Curriculum Designer",items:[
+      {text:"RISE-UP Handbook (8-chapter graduate resource)",sub:[]},
+      {text:"MS-SLP curriculum redesign (Year 2 burnout)",sub:[]},
+      {text:"6-semester Summer-start model design",sub:[]},
+      {text:"Berkeley EDUC 233 guest lecture (Mateo case)",sub:[]},
+      {text:"TEACH Reflection instrument development",sub:[]},
+      {text:"SLPA program course materials",sub:[]}
+    ]},
+    {title:"Institutional Service",items:[
+      {text:"Undergraduate Studies Committee",sub:[]},
+      {text:"Serve on department & college committees",sub:[]},
+      {text:"Participate in curriculum review processes",sub:[]},
+      {text:"Contribute to faculty search committees",sub:[]},
+      {text:"Write letters of recommendation",sub:[]},
+      {text:"Review student appeals & petitions",sub:[]},
+      {text:"Absorb disproportionate service load as faculty of color",sub:[]}
+    ]}
+  ]},
+  {label:"CSHA & Field Leadership",color:"#993C1D",hats:[
+    {title:"CSHA Foundation President",items:[
+      {text:"Lead board meetings & governance",sub:[]},
+      {text:"Manage Finance Committee relationships",sub:[]},
+      {text:"Authorize & submit budget requests",sub:[]},
+      {text:"Oversee Hardship Fund operations",sub:[]},
+      {text:"Donor cultivation & stewardship",sub:[]},
+      {text:"Develop & approve fundraising strategy",sub:[]},
+      {text:"Lead social media & communications calendar",sub:[]},
+      {text:"Represent Foundation at CSHA Convergence",sub:[]},
+      {text:"Coordinate with CSHA staff",sub:[]},
+      {text:"Sign contracts & financial documents",sub:[]},
+      {text:"Draft board minutes",sub:[]},
+      {text:"Coordinate with CSHA newsletter timing",sub:[]}
+    ]},
+    {title:"LDP Co-Lead",items:[
+      {text:"Co-design Leadership Development Program curriculum",sub:[]},
+      {text:"Plan July 31–Aug 1 Palo Alto kickoff",sub:[]},
+      {text:"Resolve contract & budget access with CSHA staff",sub:[]},
+      {text:"Draft kickoff SOP",sub:[]},
+      {text:"Recruit & onboard LDP participants",sub:[]},
+      {text:"Coordinate lodging & logistics",sub:[]},
+      {text:"Facilitate leadership learning sessions",sub:[]}
+    ]},
+    {title:"Public Scholar & Field Builder",items:[
+      {text:"Present at AERA 2026 (RISE-UP, April 8)",sub:[]},
+      {text:"Deliver guest lectures (Berkeley EDUC 233)",sub:[]},
+      {text:"Advocacy in bilingual education & raciolinguistics",sub:[]},
+      {text:"Build online & social media presence",sub:[]},
+      {text:"Amplify community-based knowledge in scholarship",sub:[]}
+    ]}
+  ]},
+  {label:"Research & Scholarship",color:"#185FA5",hats:[
+    {title:"Scholar & Researcher",items:[
+      {text:"Lead duoethnography with ash (theoretical foreground)",sub:[]},
+      {text:"Co-author AAPI manuscript with Haidi Song",sub:[]},
+      {text:"Possibly onboard Yao as third collaborator",sub:[]},
+      {text:"Manage IRB protocols (TEACH instrument, RISE-UP)",sub:[]},
+      {text:"Conduct design-based research with undergrads at SJSU",sub:[]},
+      {text:"Submit conference proposals (AERA, CSHA Convergence)",sub:[]},
+      {text:"Build TLCSD manuscript figure (on hold)",sub:[]},
+      {text:"Center CRT, AsianCrit, raciolinguistics in scholarship",sub:[]}
+    ]},
+    {title:"Grant Writer & Co-PI (CSU GUIDE)",items:[
+      {text:"Lead CSU GUIDE Track 1 multi-campus proposal",sub:[
+        "Coordinate with Erica Ellis (CSULA) & Belinda Daughrity (CSULB)",
+        "Write RFP narrative sections",
+        "Manage InfoReady submission process",
+        "Oversee Gantt timeline & deliverables",
+        "Lead CSDCAS Open Data Initiative application",
+        "Manage SJSU budget (~$80K total, IDC 10% MTDC)",
+        "Plan Clinical Excellence Day (Long Beach)"
+      ]},
+      {text:"Monitor future funding cycles",sub:[
+        "LIFT — CSU funding (watch ~April cycle)",
+        "ASHA Foundation grants",
+        "OSEP grants (aligned with Erica & Belinda's track record)",
+        "HRSA-26-096 SDS Program — forecasted May 12, 2026 (watch grants.gov)",
+        "HRSA Allied Health Workforce Development (AHWD)",
+        "Spencer Foundation (equity-focused education research)",
+        "Lumina Foundation (postsecondary access & completion)"
+      ]}
+    ]},
+    {title:"Foundational Firsts Director",items:[
+      {text:"Lead statewide CDS undergraduate pipeline program",sub:[]},
+      {text:"Facilitate SOP drafting workshops",sub:[]},
+      {text:"Run confidence-building & professional development series",sub:[]},
+      {text:"Support undergraduate research scholars",sub:[]},
+      {text:"Coordinate Strong Start Orientation",sub:[]},
+      {text:"Manage program communications & outreach",sub:[]},
+      {text:"Document RSCA activity",sub:[]}
+    ]}
+  ]},
+  {label:"Community & Civic",color:"#3B6D11",hats:[
+    {title:"Community & Equity Advocate",items:[
+      {text:"Center raciolinguistics, CRT, AsianCrit in practice",sub:[]},
+      {text:"Champion bilingual learner rights & special ed advocacy",sub:[]},
+      {text:"Co-design Project RISE-UP with Melisa Kaye (OT)",sub:[]},
+      {text:"Push for K-16 equity pipelines in CSD",sub:[]},
+      {text:"Build statewide mentorship infrastructure (2027–28)",sub:[]},
+      {text:"Amplify historically marginalized voices in CDS",sub:[]}
+    ]},
+    {title:"SMFCSD Ed Foundation Board Member",items:[
+      {text:"Serve on local school district education foundation board",sub:[]},
+      {text:"Support development of student advisory board",sub:[]},
+      {text:"Attend board meetings & planning sessions",sub:[]},
+      {text:"Connect education equity work to local community",sub:[]},
+      {text:"Bring advocacy lens to district-level decisions",sub:[]}
+    ]},
+    {title:"PTA Secretary, Middle School",items:[
+      {text:"Take & distribute meeting minutes",sub:[]},
+      {text:"Manage PTA correspondence & records",sub:[]},
+      {text:"Coordinate with PTA officers",sub:[]},
+      {text:"Support school community events & initiatives",sub:[]},
+      {text:"Help plan 8th grade Washington DC trip (fall)",sub:[
+        "Coordinate logistics with school",
+        "Track student/family sign-ups & deadlines",
+        "Communicate trip details to families"
+      ]},
+      {text:"Navigate school community relationships",sub:[]}
+    ]}
+  ]},
+  {label:"Relationships & Self",color:"#888780",hats:[
+    {title:"Mentor (formal & informal)",items:[
+      {text:"Support LDP participants as emerging leaders",sub:[]},
+      {text:"Mentor undergrad scholars in design-based research lab",sub:[]},
+      {text:"Advise newer colleagues & collaborators",sub:[]},
+      {text:"Respond to students who reach out beyond office hours",sub:[]},
+      {text:"Hold space for people navigating imposter syndrome",sub:[]},
+      {text:"Model sustainable, justice-centered scholarly identity",sub:[]}
+    ]},
+    {title:"Collaborator & Colleague",items:[
+      {text:"Research partnership with Erica Ellis (CSULA)",sub:[]},
+      {text:"Manuscript collaboration with ash",sub:[]},
+      {text:"Manuscript collaboration with Haidi Song",sub:[]},
+      {text:"Cross-campus coordination with Belinda Daughrity (CSULB)",sub:[]},
+      {text:"Project RISE-UP with Melisa Kaye (OT)",sub:[]},
+      {text:"Possible collaboration with Yao",sub:[]}
+    ]},
+    {title:"Parent",items:[
+      {text:"Support child through 7th grade",sub:[]},
+      {text:"Prepare for 8th grade transition",sub:[]},
+      {text:"Help plan Washington DC class trip (fall)",sub:[
+        "Coordinate logistics with school",
+        "Track sign-ups & deadlines",
+        "Communicate trip details to families"
+      ]},
+      {text:"Attend school events & PTA meetings",sub:[]},
+      {text:"Show up fully at home",sub:[]}
+    ]},
+    {title:"Human, Person, Self",items:[
+      {text:"Rest & recovery (honoring Tricia Hersey / Nap Ministry)",sub:[]},
+      {text:"Navigating institutional bureaucracy while staying whole",sub:[]},
+      {text:"Processing the weight of care work",sub:[]},
+      {text:"Sustaining relationships, community, joy",sub:[]},
+      {text:"Holding a collectivist, healing-centered worldview",sub:[]},
+      {text:"Protecting cognitive & emotional capacity",sub:[]}
+    ]}
+  ]}
+];
+
+let data = JSON.parse(JSON.stringify(INIT));
+let openSubs = {};
+let openCards = new Set();
+
+function save() {
+  try { localStorage.setItem('roles-standalone-v1', JSON.stringify(data)); } catch(e){}
+}
+
+function loadData() {
+  try {
+    const r = localStorage.getItem('roles-standalone-v1');
+    if (r) data = JSON.parse(r);
+  } catch(e){}
+  render();
+}
+
+function exportData() {
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'my_roles_backup.json';
+  a.click();
+}
+
+function importData() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        data = JSON.parse(ev.target.result);
+        save();
+        render();
+        alert('Data imported successfully.');
+      } catch(err) { alert('Invalid JSON file.'); }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+function render() {
+  const mc = document.getElementById('mainContent');
+  mc.innerHTML = '';
+  let totalHats = 0, totalResps = 0;
+
+  data.forEach((section, si) => {
+    totalHats += section.hats.length;
+    section.hats.forEach(h => totalResps += h.items.length);
+
+    const sh = document.createElement('div');
+    sh.className = 'section-header';
+    sh.innerHTML = `
+      <div class="section-title">
+        <div class="section-dot" style="background:${section.color}"></div>
+        ${section.label}
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="deleteSection(${si})">Remove domain</button>`;
+    mc.appendChild(sh);
+
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+
+    section.hats.forEach((hat, hi) => {
+      const cardId = `card-${si}-${hi}`;
+      const card = document.createElement('div');
+      card.className = 'hat-card' + (openCards.has(cardId) ? ' open' : '');
+      card.id = cardId;
+
+      const itemsHtml = hat.items.map((item, ii) => {
+        const subKey = `${si}-${hi}-${ii}`;
+        const subOpen = openSubs[subKey];
+        const hasSub = item.sub && item.sub.length > 0;
+        const subCount = hasSub ? ` <span style="font-size:10px;color:#a09f9a;">(${item.sub.length})</span>` : '';
+        const subItemsHtml = (item.sub || []).map((s, si2) =>
+          `<li class="sub-item">
+            <span class="sub-arrow">↳</span>
+            <span class="sub-text">${s}</span>
+            <button class="sub-del" onclick="deleteSub(${si},${hi},${ii},${si2})" title="Remove">✕</button>
+          </li>`
+        ).join('');
+        return `<li class="resp-item">
+          <div class="resp-top">
+            <span class="resp-dash">–</span>
+            <span class="resp-text" onclick="toggleSub('${subKey}')">${item.text}${subCount}</span>
+            <div class="resp-actions">
+              <button class="sub-toggle-btn" onclick="toggleSub('${subKey}')" title="Sub-items">${subOpen ? '▲' : '▼'}</button>
+              <button class="del" onclick="deleteResp(${si},${hi},${ii})" title="Remove">✕</button>
+            </div>
+          </div>
+          <ul class="sub-list${subOpen ? '' : ' hidden'}" id="sub-${subKey}">
+            ${subItemsHtml}
+            <li style="padding: 3px 0;">
+              <div class="add-sub-row">
+                <input type="text" id="subinp-${subKey}" placeholder="Add sub-item…" onkeydown="if(event.key==='Enter')addSub(${si},${hi},${ii})"/>
+                <button class="btn btn-primary btn-sm" onclick="addSub(${si},${hi},${ii})">Add</button>
+              </div>
+            </li>
+          </ul>
+        </li>`;
+      }).join('');
+
+      card.innerHTML = `
+        <div class="hat-header" onclick="toggleCard('${cardId}')">
+          <div class="hat-label">
+            <div class="hat-dot" style="background:${section.color}"></div>
+            <span class="hat-title">${hat.title}</span>
+          </div>
+          <div class="hat-meta">
+            <span class="count-badge">${hat.items.length}</span>
+            <span class="chevron">▼</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <ul class="resp-list">${itemsHtml}</ul>
+          <div class="add-resp-row">
+            <input type="text" id="inp-${si}-${hi}" placeholder="Add responsibility…" onkeydown="if(event.key==='Enter')addResp(${si},${hi})"/>
+            <button class="btn btn-primary btn-sm" onclick="addResp(${si},${hi})">Add</button>
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-sm" onclick="renameHat(${si},${hi})">Rename</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteHat(${si},${hi})">Remove hat</button>
+          </div>
+        </div>`;
+      grid.appendChild(card);
+    });
+
+    const addCard = document.createElement('div');
+    addCard.className = 'add-hat-card';
+    addCard.innerHTML = `<span>+ Add hat to ${section.label}</span>`;
+    addCard.onclick = () => openAddHat(si);
+    grid.appendChild(addCard);
+    mc.appendChild(grid);
+  });
+
+  document.getElementById('summarybar').innerHTML =
+    `<span class="pill">${totalHats} hats</span>
+     <span class="pill">${totalResps} responsibilities</span>
+     <span class="pill">${data.length} domains</span>`;
+}
+
+function toggleCard(id) {
+  const card = document.getElementById(id);
+  if (!card) return;
+  card.classList.toggle('open');
+  if (card.classList.contains('open')) openCards.add(id);
+  else openCards.delete(id);
+}
+
+function toggleAll(open) {
+  document.querySelectorAll('.hat-card').forEach(c => {
+    c.classList.toggle('open', open);
+    if (open) openCards.add(c.id); else openCards.delete(c.id);
+  });
+}
+
+function toggleSub(key) {
+  openSubs[key] = !openSubs[key];
+  const el = document.getElementById('sub-' + key);
+  if (el) el.classList.toggle('hidden', !openSubs[key]);
+  const parts = key.split('-');
+  openCards.add(`card-${parts[0]}-${parts[1]}`);
+}
+
+function addResp(si, hi) {
+  const inp = document.getElementById(`inp-${si}-${hi}`);
+  const val = inp.value.trim(); if (!val) return;
+  data[si].hats[hi].items.push({text: val, sub: []});
+  inp.value = ''; save(); render();
+  openCards.add(`card-${si}-${hi}`);
+}
+
+function deleteResp(si, hi, ii) {
+  if (!confirm('Remove this responsibility?')) return;
+  data[si].hats[hi].items.splice(ii, 1);
+  save(); render(); openCards.add(`card-${si}-${hi}`);
+}
+
+function addSub(si, hi, ii) {
+  const key = `${si}-${hi}-${ii}`;
+  const inp = document.getElementById('subinp-' + key);
+  if (!inp) return;
+  const val = inp.value.trim(); if (!val) return;
+  if (!data[si].hats[hi].items[ii].sub) data[si].hats[hi].items[ii].sub = [];
+  data[si].hats[hi].items[ii].sub.push(val);
+  openSubs[key] = true;
+  save(); render(); openCards.add(`card-${si}-${hi}`);
+}
+
+function deleteSub(si, hi, ii, si2) {
+  if (!confirm('Remove this sub-item?')) return;
+  data[si].hats[hi].items[ii].sub.splice(si2, 1);
+  openSubs[`${si}-${hi}-${ii}`] = true;
+  save(); render(); openCards.add(`card-${si}-${hi}`);
+}
+
+function deleteHat(si, hi) {
+  if (!confirm(`Remove "${data[si].hats[hi].title}"?`)) return;
+  data[si].hats.splice(hi, 1); save(); render();
+}
+
+function renameHat(si, hi) {
+  const n = prompt('New name for this hat:', data[si].hats[hi].title);
+  if (n && n.trim()) { data[si].hats[hi].title = n.trim(); save(); render(); }
+}
+
+function deleteSection(si) {
+  if (!confirm(`Remove "${data[si].label}" and all its hats?`)) return;
+  data.splice(si, 1); save(); render();
+}
+
+let addHatTarget = null;
+function openAddHat(si) {
+  addHatTarget = si !== undefined ? si : null;
+  const sel = document.getElementById('mSection');
+  sel.innerHTML = data.map((s, i) => `<option value="${i}"${i === si ? ' selected' : ''}>${s.label}</option>`).join('');
+  document.getElementById('mHatName').value = '';
+  document.getElementById('modalTitle').textContent = 'Add hat';
+  document.getElementById('modalBg').classList.add('open');
+  setTimeout(() => document.getElementById('mHatName').focus(), 50);
+}
+function closeModal() { document.getElementById('modalBg').classList.remove('open'); }
+function saveHat() {
+  const name = document.getElementById('mHatName').value.trim();
+  const si = parseInt(document.getElementById('mSection').value);
+  if (!name) return;
+  data[si].hats.push({title: name, items: []});
+  save(); render(); closeModal();
+}
+
+function openAddSection() {
+  document.getElementById('mSectionName').value = '';
+  document.getElementById('sectionModalBg').classList.add('open');
+  setTimeout(() => document.getElementById('mSectionName').focus(), 50);
+}
+function closeSectionModal() { document.getElementById('sectionModalBg').classList.remove('open'); }
+function saveSection() {
+  const name = document.getElementById('mSectionName').value.trim();
+  const color = document.getElementById('mSectionColor').value;
+  if (!name) return;
+  data.push({label: name, color, hats: []});
+  save(); render(); closeSectionModal();
+}
+
+document.getElementById('modalBg').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+document.getElementById('sectionModalBg').addEventListener('click', function(e) { if (e.target === this) closeSectionModal(); });
+
+loadData();
+</script>
+</body>
+</html>
